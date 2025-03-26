@@ -30,7 +30,7 @@ public class DateGenerator {
             int month = random.nextInt(maxMonth - minMonth + 1) + minMonth;
             int day = random.nextInt(Math.min(maxDay, daysInMonth[month - 1]) - minDay + 1) + minDay;
 
-            dates.add(new Date(day, month, year));
+            dates.add(new Date(month, day, year));
         }
 
         return dates;

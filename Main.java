@@ -3,16 +3,25 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        // Testing static is valid date method
-        System.out.println("January 27, 2005 is valid Date?: " + Date.isValidDate(1, 27, 2005));
-        System.out.println("February 30, 2020 is valid Date?: " + Date.isValidDate(2, 30, 2020));
+        //----------------------------------------------------------------------------------------
+        // Testing static is valid date methods
+        System.out.println("January 27, 2005 is valid date?: " + Date.isValidDate(1, 27, 2005));
+        System.out.println("February 30, 2020 is valid date?: " + Date.isValidDate(2, 30, 2020));
+        System.out.println("February is valid month?: " + Date.isValidMonth(2));
+        System.err.println("13 is valid month?: " + Date.isValidMonth(13));
+        System.out.println("February 29, 2020 is valid day?: " + Date.isValidDay(2, 29, 2020));
+        System.out.println("February 29, 2021 is valid day?: " + Date.isValidDay(2, 29, 2021));
+        System.out.println("2005 is valid year?: " + Date.isValidYear(2005));
+        System.out.println("0 is valid year?: " + Date.isValidYear(0));
         System.out.println();
 
+        //----------------------------------------------------------------------------------------
         // Testing static is leap year method
         System.out.println("2020 is leap year?: " + Date.isLeapYear(2020));
         System.out.println("2021 is leap year?: " + Date.isLeapYear(2021));
         System.out.println();
 
+        //----------------------------------------------------------------------------------------
         // Testing static print date method
         System.out.print("Print valid date: "); Date.printDate(1, 27, 2005);
         try {
@@ -22,6 +31,7 @@ public class Main {
         }
         System.out.println();
 
+        //----------------------------------------------------------------------------------------
         // Constructor testing
         Date date = new Date(); // Default constructor
         System.out.print("Default date: "); date.printDate();
@@ -35,6 +45,7 @@ public class Main {
         }
         System.out.println();
 
+        //----------------------------------------------------------------------------------------
         // Update date testing
         date.updateDate(3, 26, 2025); System.out.print("Updated date: "); date.printDate();
         try {
@@ -44,17 +55,19 @@ public class Main {
         }
         System.out.println();
         
+        //----------------------------------------------------------------------------------------
         // Get day of the week testing
         System.out.println("Day of the week of January 27, 2005: " + Date.getDayOfWeek(1, 27, 2005)); // Static method
         System.out.print("Day of the "); date.printDate(""); System.out.println(" is " + date.getDayOfWeek()); // Instance method
         System.out.println();
 
+        //----------------------------------------------------------------------------------------
         // To days testing
         System.out.println("To days of January 27, 2005: " + Date.toDays(1, 27, 2005)); // Static method
         System.out.print("To days: "); date.printDate(""); System.out.println(" is " + date.toDays()); // Instance method
         System.out.println();
 
-
+        //----------------------------------------------------------------------------------------
         // calculate difference testing
         // Static method
         System.out.println("Difference between January 1, 2025 and March 26, 2025: " + Date.calculateDifference(1, 1, 2025, 3, 26, 2025));
@@ -64,9 +77,22 @@ public class Main {
         System.out.println(date.calculateDifference(date2)); // Instance method
         System.out.println();
 
+        //----------------------------------------------------------------------------------------
+        // Get days in month testing
+        System.out.println("Days in January 2020: " + Date.getDaysInMonth(1, 2020));
+        System.out.println("Days in " + date.getMonthName() + ' ' + date.year + ": " + date.getDaysInMonth());
+        System.out.println();
+
+        //----------------------------------------------------------------------------------------
+        // Get month name testing
+        date.printDate(" "); System.out.println("month is " + date.getMonthName());
+        System.out.println("Month 1 is " + Date.getMonthName(1));
+        System.out.println();
+        
+        //----------------------------------------------------------------------------------------
         // Testing generate random dates and sort them
         // Generate 10 random dates
-        List<Date> randomDates = Date.generateRandomDates(20);
+        List<Date> randomDates = Date.generateRandomDates(10);
 
         // Print unsorted list of random dates
         System.out.println("Unsorted Dates:");

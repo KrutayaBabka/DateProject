@@ -40,6 +40,52 @@ public class Date implements Comparable<Date>{
     }
 
     /**
+     * Returns the number of days in a given month for a specified year.
+     * Accounts for leap years when calculating February days.
+     *
+     * @return the number of days in the specified month
+     */
+    public int getDaysInMonth() {        
+        // If the month is February and it's a leap year, return 29 days
+        if (month == 2 && isLeapYear(year)) {
+            return 29;
+        }
+        
+        // Array representing the number of days in each month
+        int[] daysInMonth = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+        return daysInMonth[month - 1]; // Return the correct number of days for the given month
+    }
+
+    /**
+     * Returns the number of days in a given month for a specified year.
+     * Accounts for leap years when calculating February days.
+     *
+     * @param month the month (1-12)
+     * @param year the year to consider for leap year calculation
+     * @return the number of days in the specified month
+     * @throws IllegalArgumentException if the month is not in the range 1-12
+     */
+    public static int getDaysInMonth(int month, int year) {
+        if(!isValidMonth(month) || !isValidYear(year)) {
+            throw new IllegalArgumentException("Invalid date: " + month + " (must be 1-12)");
+        }
+        if(!isValidYear(year)) {
+            throw new IllegalArgumentException("Invalid year: " + year + " (must be 1 and above)");
+        }
+        
+        // If the month is February and it's a leap year, return 29 days
+        if (month == 2 && isLeapYear(year)) {
+            return 29;
+        }
+        
+        // Array representing the number of days in each month
+        int[] daysInMonth = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+        return daysInMonth[month - 1]; // Return the correct number of days for the given month
+    }
+
+    /**
      * Checks if the given date is valid.
      *
      * @param month the month of the year (1 to 12)
@@ -48,18 +94,40 @@ public class Date implements Comparable<Date>{
      * @return true if the date is valid, false otherwise
      */
     public static boolean isValidDate(int month, int day, int year) {
-        if (month < 1 || month > 12 || day < 1 || year < 1) {
-            return false;
-        }
+        return isValidYear(year) && isValidMonth(month) && isValidDay(month, day, year);
+    }
 
-        int[] daysInMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    /**
+     * Checks if the given year is valid.
+     *
+     * @param year the year to check (must be 1 or greater)
+     * @return true if the year is valid, false otherwise
+     */
+    public static boolean isValidYear(int year) {
+        return year >= 1;
+    }
 
-        // Adjust for leap years in February
-        if (isLeapYear(year)) {
-            daysInMonth[1] = 29;
-        }
+    /**
+     * Checks if the given month is valid.
+     *
+     * @param month the month to check (1 to 12)
+     * @return true if the month is valid, false otherwise
+     */
+    public static boolean isValidMonth(int month) {
+        return month >= 1 && month <= 12;
+    }
 
-        return day <= daysInMonth[month - 1];
+    /**
+     * Checks if the given day is valid for the specified month and year.
+     *
+     * @param day   the day to check (1 to 31)
+     * @param month the month in which the day is checked
+     * @param year  the year to consider (for leap year adjustments)
+     * @return true if the day is valid, false otherwise
+     */
+    public static boolean isValidDay(int month, int day, int year) {
+        int maxDays = getDaysInMonth(month, year);
+        return day >= 1 && day <= maxDays;
     }
 
     /**
@@ -68,7 +136,7 @@ public class Date implements Comparable<Date>{
      * @return true if the year of this date is a leap year, false otherwise
      */
     public boolean isLeapYear() {
-        return isLeapYear(this.year); // Calls the static method
+        return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
     }
 
     /**
@@ -80,6 +148,10 @@ public class Date implements Comparable<Date>{
      * @return true if the year is a leap year, false otherwise
      */
     public static boolean isLeapYear(int year) {
+        if(!isValidYear(year)) {
+            throw new IllegalArgumentException("Invalid year: " + year + " (must be 1 and above)");
+        }
+
         return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
     }
 
@@ -98,12 +170,18 @@ public class Date implements Comparable<Date>{
      * @param end the ending character(s) to append after the date
      */
     public void printDate(String end) {
-        String[] monthNames = {
-            "January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"
-        };
+        System.out.print(getMonthName() + " " + day + ", " + year + end);
+    }
 
-        System.out.print(monthNames[month - 1] + " " + day + ", " + year + end);
+    /**
+     * Returns the name of the month as a string.
+     *
+     * @return the name of the current month
+     */
+    public String getMonthName() {
+        String[] monthNames = { "January", "February", "March", "April", "May", "June", 
+                                "July", "August", "September", "October", "November", "December" };
+        return monthNames[month - 1]; // Return the month name
     }
 
     /**
@@ -132,14 +210,24 @@ public class Date implements Comparable<Date>{
             throw new IllegalArgumentException("Invalid date: " + month + " " + day + ", " + year);
         }
 
-        String[] monthNames = {
-            "January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"
-        };
-
-        System.out.print(monthNames[month - 1] + " " + day + ", " + year + end);
+        System.out.print(getMonthName(month) + " " + day + ", " + year + end);
     }
 
+    /**
+     * Returns the name of the month as a string.
+     * 
+     * @param month the month of the year (1 to 12)
+     * @return the name of the current month
+     */
+    public static String getMonthName(int month) {
+        if(!isValidMonth(month)) {
+            throw new IllegalArgumentException("Invalid month: " + month + " (must be 1-12)");
+        }
+
+        String[] monthNames = { "January", "February", "March", "April", "May", "June", 
+                                "July", "August", "September", "October", "November", "December" };
+        return monthNames[month - 1]; // Return the month name
+    }
 
     /**
      * Updates the day, month, and year attributes after checking validity.
@@ -249,14 +337,8 @@ public class Date implements Comparable<Date>{
         days -= (year - 1) / 100; // Every 100 years is not a leap year
         days += (year - 1) / 400; // Every 400 years is a leap year again
 
-        // Add days in the previous months of the current year
-        int[] daysInMonth = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-        if (isLeapYear(year)) {
-            daysInMonth[1] = 29; // Adjust February days for leap year
-        }
-
         for (int i = 0; i < month - 1; i++) {
-            days += daysInMonth[i];
+            days += getDaysInMonth(i + 1, year);
         }
 
         // Add the days of the current month
@@ -313,14 +395,8 @@ public class Date implements Comparable<Date>{
         days -= (year - 1) / 100; // Every 100 years is not a leap year
         days += (year - 1) / 400; // Every 400 years is a leap year again
 
-        // Add days in the previous months of the current year
-        int[] daysInMonth = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-        if (isLeapYear(year)) {
-            daysInMonth[1] = 29; // Adjust February days for leap year
-        }
-
         for (int i = 0; i < month - 1; i++) {
-            days += daysInMonth[i];
+            days += getDaysInMonth(i + 1, year);
         }
 
         // Add the days of the current month
