@@ -1,8 +1,14 @@
+import java.util.List;
+
 /**
  * The Date class represents a date with day, month, and year.
  * It allows validation of dates and determination of leap years.
  */
-public class Date {
+public class Date implements Comparable<Date>{
+    
+    // Static instance of DateGenerator for easy access
+    public static final DateGenerator generator = new DateGenerator();
+
     int month;
     int day;
     int year;
@@ -323,4 +329,37 @@ public class Date {
         return days;
     }
 
+    /**
+     * Generates a list of n random Date objects.
+     *
+     * @param n the number of random Date objects to generate
+     * @return a list of n random Date objects
+     */
+    public static List<Date> generateRandomDates(int n) {
+        return generator.generateRandomDates(n);
+    }
+
+    /**
+     * Compares this date with another date for order.
+     * The comparison is first by year, then by month, and finally by day.
+     *
+     * @param other the other date to compare to
+     * @return a negative integer, zero, or a positive integer if this date is 
+     *         less than, equal to, or greater than the specified date
+     */
+    @Override
+    public int compareTo(Date other) {
+        // Compare by year first
+        if (this.year != other.year) {
+            return this.year - other.year;
+        }
+
+        // If years are the same, compare by month
+        if (this.month != other.month) {
+            return this.month - other.month;
+        }
+
+        // If both year and month are the same, compare by day
+        return this.day - other.day;
+    }
 }

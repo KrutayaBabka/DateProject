@@ -1,3 +1,6 @@
+import java.util.Collections;
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
         // Testing static is valid date method
@@ -61,6 +64,24 @@ public class Main {
         System.out.println(date.calculateDifference(date2)); // Instance method
         System.out.println();
 
-        
+        // Testing generate random dates and sort them
+        // Generate 10 random dates
+        List<Date> randomDates = Date.generateRandomDates(20);
+
+        // Print unsorted list of random dates
+        System.out.println("Unsorted Dates:");
+        for(Date dt : randomDates) {
+            dt.printDate();
+        }
+
+        System.out.println();
+
+        Collections.sort(randomDates);
+
+        System.out.println("Sorted Dates:");
+        // Print sorted list of random dates
+        for(Date dt : randomDates) {
+            dt.printDate();
+        }
     }
 }
