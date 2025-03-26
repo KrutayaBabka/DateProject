@@ -181,4 +181,39 @@ public class Date {
         return days[h]; // Return the computed day of the week
     }
 
+    /**
+     * Returns the day of the week for the current date instance (e.g., "Monday"),
+     * using Zeller's Congruence algorithm.
+     * @param day the new day to set
+     * @param month the new month to set
+     * @param year the new year to set
+     * @throws IllegalArgumentException if the provided date is invalid
+     * @return the name of the day of the week
+     */
+    public static String getDayOfWeek(int day, int month, int year) {
+        if(!isValidDate(day, month, year)) {
+            throw new IllegalArgumentException("Invalid date: " + month + " " + day + ", " + year);
+        }
+
+        int d = day;
+        int m = month;
+        int y = year;
+
+        // Adjust months so that March = 3, ..., December = 12, January = 13, February = 14 (previous year)
+        if (m < 3) {
+            m += 12;
+            y -= 1;
+        }
+
+        int K = y % 100; // Year within the century
+        int J = y / 100; // Zero-based century
+
+        // Zeller's Congruence formula
+        int h = (d + (13 * (m + 1)) / 5 + K + (K / 4) + (J / 4) + (5 * J)) % 7;
+
+        // Days of the week mapping (Zeller's algorithm returns 0 = Saturday, 1 = Sunday, ..., 6 = Friday)
+        String[] days = { "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
+
+        return days[h]; // Return the computed day of the week
+    }
 }

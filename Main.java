@@ -1,14 +1,16 @@
 public class Main {
     public static void main(String[] args) {
-        // Static methods testing
+        // Testing static is valid date method
         System.out.println("27 January, 2005 is valid Date?: " + Date.isValidDate(27, 1, 2005));
         System.out.println("30 February, 2020 is valid Date?: " + Date.isValidDate(30, 2, 2020));
         System.out.println();
 
+        // Testing static is leap year method
         System.out.println("2020 is leap year?: " + Date.isLeapYear(2020));
         System.out.println("2021 is leap year?: " + Date.isLeapYear(2021));
         System.out.println();
 
+        // Testing static print date method
         System.out.print("Print valid date: "); Date.printDate(27, 1, 2005);
         try {
             Date.printDate(30, 2, 2005);
@@ -39,6 +41,11 @@ public class Main {
         }
         System.out.println();
         
-        System.out.print("Day of the "); date.printDate(""); System.out.println(" is " + date.getDayOfWeek());
+        // Get day of the week testing
+        System.out.println("Day of the week of 27 January, 2005: " + Date.getDayOfWeek(27, 1, 2005)); // Static method
+        System.out.print("Day of the "); date.printDate(""); System.out.println(" is " + date.getDayOfWeek()); // Instance method
+        System.out.println();
+
+        
     }
 }
