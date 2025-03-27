@@ -6,14 +6,9 @@ import java.util.List;
  * It allows validation of dates and determination of leap years.
  */
 public class Date implements Comparable<Date>{
-    
-    // Static instance of DateGenerator for easy access
-    public final DateGenerator generator = new DateGenerator();
-
-    // Instance variables
-    private int month;
-    private int day;
-    private int year;
+    //-----------------------------------------------------------------------------------------------|
+    //                                       CONSTRUCTORS                                            |
+    //-----------------------------------------------------------------------------------------------|
 
     /**
      * Creates a Date object representing the current date.
@@ -42,90 +37,10 @@ public class Date implements Comparable<Date>{
         this.year = year;
     }
 
-    /**
-     * Returns the month.
-     *
-     * @return the month (1-12)
-     */
-    public int getMonth() {
-        return month;
-    }
-
-    /**
-     * Sets the month.
-     *
-     * @param month the month to set (1-12)
-     * @throws IllegalArgumentException if the month is out of range
-     */
-    public void setMonth(int month) {
-        if (!isValidMonth(month)) {
-            throw new IllegalArgumentException("Invalid month: " + month + ". Must be between 1 and 12.");
-        }
-        this.month = month;
-    }
-
-    /**
-     * Returns the day.
-     *
-     * @return the day (1-31, depending on the month and year)
-     */
-    public int getDay() {
-        return day;
-    }
-
-    /**
-     * Sets the day.
-     *
-     * @param day the day to set (valid range depends on the month and year)
-     * @throws IllegalArgumentException if the day is out of range for the given month and year
-     */
-    public void setDay(int day) {
-        if (!isValidDay(day, this.month, this.year)) {
-            throw new IllegalArgumentException("Invalid day: " + day + ". Must be valid for month " + month + " and year " + year + ".");
-        }
-        this.day = day;
-    }
-
-    /**
-     * Returns the year.
-     *
-     * @return the year (1 or greater)
-     */
-    public int getYear() {
-        return year;
-    }
-
-    /**
-     * Sets the year.
-     *
-     * @param year the year to set (must be positive)
-     * @throws IllegalArgumentException if the year is less than 1
-     */
-    public void setYear(int year) {
-        if (!isValidYear(year)) {
-            throw new IllegalArgumentException("Invalid year: " + year + ". Must be greater than 0.");
-        }
-        this.year = year;
-    }
-
-    /**
-     * Returns the number of days in a given month for a specified year.
-     * Accounts for leap years when calculating February days.
-     *
-     * @return the number of days in the specified month
-     */
-    public int getDaysInMonth() {        
-        // If the month is February and it's a leap year, return 29 days
-        if (month == 2 && isLeapYear(year)) {
-            return 29;
-        }
-        
-        // Array representing the number of days in each month
-        int[] daysInMonth = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-
-        return daysInMonth[month - 1]; // Return the correct number of days for the given month
-    }
-
+    //-----------------------------------------------------------------------------------------------|
+    //                                       STATIC METHODS                                          |
+    //-----------------------------------------------------------------------------------------------|
+    //-----------------------------------------------------------------------------------------------
     /**
      * Returns the number of days in a given month for a specified year.
      * Accounts for leap years when calculating February days.
@@ -154,6 +69,7 @@ public class Date implements Comparable<Date>{
         return daysInMonth[month - 1]; // Return the correct number of days for the given month
     }
 
+    //-----------------------------------------------------------------------------------------------
     /**
      * Checks if the given date is valid.
      *
@@ -199,15 +115,7 @@ public class Date implements Comparable<Date>{
         return day >= 1 && day <= maxDays;
     }
 
-    /**
-     * Determines whether the year of this Date instance is a leap year.
-     *
-     * @return true if the year of this date is a leap year, false otherwise
-     */
-    public boolean isLeapYear() {
-        return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
-    }
-
+    //-----------------------------------------------------------------------------------------------
     /**
      * Determines whether the given year is a leap year.
      * A year is a leap year if it is divisible by 4 but not by 100,
@@ -224,35 +132,7 @@ public class Date implements Comparable<Date>{
         return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
     }
 
-    /**
-     * Displays the date in a readable format, such as "January 1, 2023".
-     * Ends with a newline by default.
-     */
-    public void printDate() {
-        printDate("\n"); // Calls the overloaded method with default newline
-    }
-
-    /**
-     * Displays the date in a readable format, such as "January 1, 2023",
-     * and allows specifying a custom ending (e.g., "" for no newline).
-     *
-     * @param end the ending character(s) to append after the date
-     */
-    public void printDate(String end) {
-        System.out.print(getMonthName() + " " + day + ", " + year + end);
-    }
-
-    /**
-     * Returns the name of the month as a string.
-     *
-     * @return the name of the current month
-     */
-    public String getMonthName() {
-        String[] monthNames = { "January", "February", "March", "April", "May", "June", 
-                                "July", "August", "September", "October", "November", "December" };
-        return monthNames[month - 1]; // Return the month name
-    }
-
+    //-----------------------------------------------------------------------------------------------
     /**
      * Displays the given date in a readable format, such as "January 1, 2023".
      * Ends with a newline by default.
@@ -282,6 +162,7 @@ public class Date implements Comparable<Date>{
         System.out.print(getMonthName(month) + " " + day + ", " + year + end);
     }
 
+    //-----------------------------------------------------------------------------------------------
     /**
      * Returns the name of the month as a string.
      * 
@@ -298,52 +179,7 @@ public class Date implements Comparable<Date>{
         return monthNames[month - 1]; // Return the month name
     }
 
-    /**
-     * Updates the day, month, and year attributes after checking validity.
-     *
-     * @param month the new month to set
-     * @param day the new day to set
-     * @param year the new year to set
-     * @throws IllegalArgumentException if the provided date is invalid
-     */
-    public void updateDate(int month, int day, int year) {
-        if (!isValidDate(month, day, year)) {
-            throw new IllegalArgumentException("Invalid date: " + month + " " + day + ", " + year);
-        }
-        this.month = month;
-        this.day = day;
-        this.year = year;
-    }
-
-    /**
-     * Returns the day of the week for the current date instance (e.g., "Monday"),
-     * using Zeller's Congruence algorithm.
-     *
-     * @return the name of the day of the week
-     */
-    public String getDayOfWeek() {
-        int m = month;
-        int d = day;
-        int y = year;
-
-        // Adjust months so that March = 3, ..., December = 12, January = 13, February = 14 (previous year)
-        if (m < 3) {
-            m += 12;
-            y -= 1;
-        }
-
-        int K = y % 100; // Year within the century
-        int J = y / 100; // Zero-based century
-
-        // Zeller's Congruence formula
-        int h = (d + (13 * (m + 1)) / 5 + K + (K / 4) + (J / 4) + (5 * J)) % 7;
-
-        // Days of the week mapping (Zeller's algorithm returns 0 = Saturday, 1 = Sunday, ..., 6 = Friday)
-        String[] days = { "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
-
-        return days[h]; // Return the computed day of the week
-    }
-
+    //-----------------------------------------------------------------------------------------------
     /**
      * Returns the day of the week for the current date instance (e.g., "Monday"),
      * using Zeller's Congruence algorithm.
@@ -380,42 +216,7 @@ public class Date implements Comparable<Date>{
         return days[h]; // Return the computed day of the week
     }
 
-    /**
-     * Computes the difference in days between this date and another date.
-     * Considers leap years.
-     *
-     * @param otherDate the other Date object to compare with
-     * @return the number of days between the two dates
-     */
-    public int calculateDifference(Date otherDate) {
-        return Math.abs(toDays() - otherDate.toDays());
-    }
-
-    /**
-     * Converts the date to the total number of days since year 1.
-     * Uses a mathematical approach for faster calculation.
-     *
-     * @return the total number of days from year 1 to this date
-     */
-    public int toDays() {
-        // Total days from full years (ignores leap years)
-        int days = (year - 1) * 365;
-
-        // Add leap years
-        days += (year - 1) / 4;   // Every 4 years is a leap year
-        days -= (year - 1) / 100; // Every 100 years is not a leap year
-        days += (year - 1) / 400; // Every 400 years is a leap year again
-
-        for (int i = 0; i < month - 1; i++) {
-            days += getDaysInMonth(i + 1, year);
-        }
-
-        // Add the days of the current month
-        days += day;
-
-        return days;
-    }
-
+    //-----------------------------------------------------------------------------------------------
     /**
      * Computes the difference in days between two dates.
      * Considers leap years.
@@ -474,40 +275,7 @@ public class Date implements Comparable<Date>{
         return days;
     }
 
-    /**
-     * Generates a list of n random Date objects.
-     *
-     * @param n the number of random Date objects to generate
-     * @return a list of n random Date objects
-     */
-    public List<Date> generateRandomDates(int n) {
-        return generator.generateRandomDates(n);
-    }
-
-    /**
-     * Compares this date with another date for order.
-     * The comparison is first by year, then by month, and finally by day.
-     *
-     * @param other the other date to compare to
-     * @return a negative integer, zero, or a positive integer if this date is 
-     *         less than, equal to, or greater than the specified date
-     */
-    @Override
-    public int compareTo(Date other) {
-        // Compare by year first
-        if (this.year != other.year) {
-            return this.year - other.year;
-        }
-
-        // If years are the same, compare by month
-        if (this.month != other.month) {
-            return this.month - other.month;
-        }
-
-        // If both year and month are the same, compare by day
-        return this.day - other.day;
-    }
-
+    //-----------------------------------------------------------------------------------------------
     /**
      * Checks if there is at least one leap year in the given range [minYear, maxYear].
      * A leap year is a year that is:
@@ -536,6 +304,7 @@ public class Date implements Comparable<Date>{
         return firstLeap <= maxYear;
     }
 
+    //-----------------------------------------------------------------------------------------------
     /**
      * Returns the minimum number of days among the given range of months.
      *
@@ -570,6 +339,7 @@ public class Date implements Comparable<Date>{
         return minDays;
     }
 
+    //-----------------------------------------------------------------------------------------------
     /**
      * Returns the maximum number of days among the given range of months.
      *
@@ -604,4 +374,265 @@ public class Date implements Comparable<Date>{
         return maxDays;
     }
 
+    //-----------------------------------------------------------------------------------------------|
+    //                                       INSTANCE METHODS                                        |
+    //-----------------------------------------------------------------------------------------------|
+
+    // Inner class for generating random dates
+    public final DateGenerator generator = new DateGenerator();
+
+    // Instance variables
+    private int month;
+    private int day;
+    private int year;
+
+    //-----------------------------------------------------------------------------------------------
+    /**
+     * Returns the month.
+     *
+     * @return the month (1-12)
+     */
+    public int getMonth() {
+        return month;
+    }
+
+    /**
+     * Sets the month.
+     *
+     * @param month the month to set (1-12)
+     * @throws IllegalArgumentException if the month is out of range
+     */
+    public void setMonth(int month) {
+        if (!isValidMonth(month)) {
+            throw new IllegalArgumentException("Invalid month: " + month + ". Must be between 1 and 12.");
+        }
+        this.month = month;
+    }
+
+    //-----------------------------------------------------------------------------------------------
+    /**
+     * Returns the day.
+     *
+     * @return the day (1-31, depending on the month and year)
+     */
+    public int getDay() {
+        return day;
+    }
+
+    /**
+     * Sets the day.
+     *
+     * @param day the day to set (valid range depends on the month and year)
+     * @throws IllegalArgumentException if the day is out of range for the given month and year
+     */
+    public void setDay(int day) {
+        if (!isValidDay(day, this.month, this.year)) {
+            throw new IllegalArgumentException("Invalid day: " + day + ". Must be valid for month " + month + " and year " + year + ".");
+        }
+        this.day = day;
+    }
+
+    //-----------------------------------------------------------------------------------------------
+    /**
+     * Returns the year.
+     *
+     * @return the year (1 or greater)
+     */
+    public int getYear() {
+        return year;
+    }
+
+    /**
+     * Sets the year.
+     *
+     * @param year the year to set (must be positive)
+     * @throws IllegalArgumentException if the year is less than 1
+     */
+    public void setYear(int year) {
+        if (!isValidYear(year)) {
+            throw new IllegalArgumentException("Invalid year: " + year + ". Must be greater than 0.");
+        }
+        this.year = year;
+    }
+
+    //-----------------------------------------------------------------------------------------------
+    /**
+     * Returns the number of days in a given month for a specified year.
+     * Accounts for leap years when calculating February days.
+     *
+     * @return the number of days in the specified month
+     */
+    public int getDaysInMonth() {        
+        // If the month is February and it's a leap year, return 29 days
+        if (month == 2 && isLeapYear(year)) {
+            return 29;
+        }
+        
+        // Array representing the number of days in each month
+        int[] daysInMonth = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+        return daysInMonth[month - 1]; // Return the correct number of days for the given month
+    }
+
+    //-----------------------------------------------------------------------------------------------
+    /**
+     * Determines whether the year of this Date instance is a leap year.
+     *
+     * @return true if the year of this date is a leap year, false otherwise
+     */
+    public boolean isLeapYear() {
+        return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+    }
+
+    //-----------------------------------------------------------------------------------------------
+    /**
+     * Displays the date in a readable format, such as "January 1, 2023".
+     * Ends with a newline by default.
+     */
+    public void printDate() {
+        printDate("\n"); // Calls the overloaded method with default newline
+    }
+
+    /**
+     * Displays the date in a readable format, such as "January 1, 2023",
+     * and allows specifying a custom ending (e.g., "" for no newline).
+     *
+     * @param end the ending character(s) to append after the date
+     */
+    public void printDate(String end) {
+        System.out.print(getMonthName() + " " + day + ", " + year + end);
+    }
+
+    //-----------------------------------------------------------------------------------------------
+    /**
+     * Returns the name of the month as a string.
+     *
+     * @return the name of the current month
+     */
+    public String getMonthName() {
+        String[] monthNames = { "January", "February", "March", "April", "May", "June", 
+                                "July", "August", "September", "October", "November", "December" };
+        return monthNames[month - 1]; // Return the month name
+    }
+
+    //-----------------------------------------------------------------------------------------------
+    /**
+     * Updates the day, month, and year attributes after checking validity.
+     *
+     * @param month the new month to set
+     * @param day the new day to set
+     * @param year the new year to set
+     * @throws IllegalArgumentException if the provided date is invalid
+     */
+    public void updateDate(int month, int day, int year) {
+        if (!isValidDate(month, day, year)) {
+            throw new IllegalArgumentException("Invalid date: " + month + " " + day + ", " + year);
+        }
+        this.month = month;
+        this.day = day;
+        this.year = year;
+    }
+
+    //-----------------------------------------------------------------------------------------------
+    /**
+     * Returns the day of the week for the current date instance (e.g., "Monday"),
+     * using Zeller's Congruence algorithm.
+     *
+     * @return the name of the day of the week
+     */
+    public String getDayOfWeek() {
+        int m = month;
+        int d = day;
+        int y = year;
+
+        // Adjust months so that March = 3, ..., December = 12, January = 13, February = 14 (previous year)
+        if (m < 3) {
+            m += 12;
+            y -= 1;
+        }
+
+        int K = y % 100; // Year within the century
+        int J = y / 100; // Zero-based century
+
+        // Zeller's Congruence formula
+        int h = (d + (13 * (m + 1)) / 5 + K + (K / 4) + (J / 4) + (5 * J)) % 7;
+
+        // Days of the week mapping (Zeller's algorithm returns 0 = Saturday, 1 = Sunday, ..., 6 = Friday)
+        String[] days = { "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
+
+        return days[h]; // Return the computed day of the week
+    }
+
+    //-----------------------------------------------------------------------------------------------
+    /**
+     * Computes the difference in days between this date and another date.
+     * Considers leap years.
+     *
+     * @param otherDate the other Date object to compare with
+     * @return the number of days between the two dates
+     */
+    public int calculateDifference(Date otherDate) {
+        return Math.abs(toDays() - otherDate.toDays());
+    }
+
+    /**
+     * Converts the date to the total number of days since year 1.
+     * Uses a mathematical approach for faster calculation.
+     *
+     * @return the total number of days from year 1 to this date
+     */
+    public int toDays() {
+        // Total days from full years (ignores leap years)
+        int days = (year - 1) * 365;
+
+        // Add leap years
+        days += (year - 1) / 4;   // Every 4 years is a leap year
+        days -= (year - 1) / 100; // Every 100 years is not a leap year
+        days += (year - 1) / 400; // Every 400 years is a leap year again
+
+        for (int i = 0; i < month - 1; i++) {
+            days += getDaysInMonth(i + 1, year);
+        }
+
+        // Add the days of the current month
+        days += day;
+
+        return days;
+    }
+
+    //-----------------------------------------------------------------------------------------------
+    /**
+     * Generates a list of n random Date objects.
+     *
+     * @param n the number of random Date objects to generate
+     * @return a list of n random Date objects
+     */
+    public List<Date> generateRandomDates(int n) {
+        return generator.generateRandomDates(n);
+    }
+
+    //-----------------------------------------------------------------------------------------------
+    /**
+     * Compares this date with another date for order.
+     * The comparison is first by year, then by month, and finally by day.
+     *
+     * @param other the other date to compare to
+     * @return a negative integer, zero, or a positive integer if this date is 
+     *         less than, equal to, or greater than the specified date
+     */
+    @Override
+    public int compareTo(Date other) {
+        // Compare by year first
+        if (this.year != other.year) {
+            return this.year - other.year;
+        }
+
+        // If years are the same, compare by month
+        if (this.month != other.month) {
+            return this.month - other.month;
+        }
+
+        // If both year and month are the same, compare by day
+        return this.day - other.day;
+    }
 }

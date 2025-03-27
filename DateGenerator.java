@@ -1,10 +1,16 @@
 import java.util.*;
 
+/**
+ * A class that generates random Date objects within a specified range.
+ */
 public class DateGenerator {
+    // Random object to generate random values
+    private final Random random = new Random();
+    
+    // Default range values
     private int minDay = 1, maxDay = 31;
     private int minMonth = 1, maxMonth = 12;
     private int minYear = 1, maxYear = Integer.MAX_VALUE;
-    private final Random random = new Random();
 
     /**
      * Returns the minimum day of the allowed range.
