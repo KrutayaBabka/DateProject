@@ -4,7 +4,7 @@ import date.Date;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Main {
+public class Test {
     public static void main(String[] args) {
         //----------------------------------------------------------------------------------------
         // Testing static is valid date methods
