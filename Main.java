@@ -80,7 +80,7 @@ public class Main {
         //----------------------------------------------------------------------------------------
         // Get days in month testing
         System.out.println("Days in January 2020: " + Date.getDaysInMonth(1, 2020));
-        System.out.println("Days in " + date.getMonthName() + ' ' + date.year + ": " + date.getDaysInMonth());
+        System.out.println("Days in " + date.getMonthName() + ' ' + date.getYear() + ": " + date.getDaysInMonth());
         System.out.println();
 
         //----------------------------------------------------------------------------------------
@@ -88,11 +88,34 @@ public class Main {
         date.printDate(" "); System.out.println("month is " + date.getMonthName());
         System.out.println("Month 1 is " + Date.getMonthName(1));
         System.out.println();
-        
+
+        // Testing is there leap year in range
+        System.out.println("Is there leap year between 2000 and 2005?: " + Date.hasLeapYearInRange(2000, 2005));        
+        System.out.println("Is there leap year between 1900 and 1903?: " + Date.hasLeapYearInRange(1900, 1903));
+        System.out.println();
+
+        // Testing get min days in months
+        System.out.println("Min days in months between January and March not in a leap year: " + Date.getMinDaysInMonths(1, 3, false));
+        System.out.println("Min days in months between January and March in a leap year: " + Date.getMinDaysInMonths(1, 3, true));
+        System.out.println();
+
+        // Testing get max days in months
+        System.out.println("Max days in months between January and March not in a leap year: " + Date.getMaxDaysInMonths(1, 3, false));
+        System.out.println("Max days in months between January and March in a leap year: " + Date.getMaxDaysInMonths(1, 3, true));
+        System.out.println();
+
         //----------------------------------------------------------------------------------------
         // Testing generate random dates and sort them
+        // Set the range of random dates
+        date.generator.setMinYear(2000);
+        date.generator.setMaxYear(2025);
+        date.generator.setMinMonth(1);
+        date.generator.setMaxMonth(12);
+        date.generator.setMinDay(1);
+        date.generator.setMaxDay(31);
+
         // Generate 10 random dates
-        List<Date> randomDates = Date.generateRandomDates(10);
+        List<Date> randomDates = date.generateRandomDates(10);
 
         // Print unsorted list of random dates
         System.out.println("Unsorted Dates:");

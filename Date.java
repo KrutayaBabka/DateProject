@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -7,19 +8,21 @@ import java.util.List;
 public class Date implements Comparable<Date>{
     
     // Static instance of DateGenerator for easy access
-    public static final DateGenerator generator = new DateGenerator();
+    public final DateGenerator generator = new DateGenerator();
 
-    int month;
-    int day;
-    int year;
+    // Instance variables
+    private int month;
+    private int day;
+    private int year;
 
     /**
-     * Creates a Date object representing the default start date (January 1, year 1).
+     * Creates a Date object representing the current date.
      */
     public Date() {
-        this.month = 1;
-        this.day = 1;
-        this.year = 1;
+        LocalDate today = LocalDate.now();
+        this.day = today.getDayOfMonth();
+        this.month = today.getMonthValue();
+        this.year = today.getYear();
     }
 
     /**
@@ -36,6 +39,72 @@ public class Date implements Comparable<Date>{
         }
         this.month = month;
         this.day = day;
+        this.year = year;
+    }
+
+    /**
+     * Returns the month.
+     *
+     * @return the month (1-12)
+     */
+    public int getMonth() {
+        return month;
+    }
+
+    /**
+     * Sets the month.
+     *
+     * @param month the month to set (1-12)
+     * @throws IllegalArgumentException if the month is out of range
+     */
+    public void setMonth(int month) {
+        if (!isValidMonth(month)) {
+            throw new IllegalArgumentException("Invalid month: " + month + ". Must be between 1 and 12.");
+        }
+        this.month = month;
+    }
+
+    /**
+     * Returns the day.
+     *
+     * @return the day (1-31, depending on the month and year)
+     */
+    public int getDay() {
+        return day;
+    }
+
+    /**
+     * Sets the day.
+     *
+     * @param day the day to set (valid range depends on the month and year)
+     * @throws IllegalArgumentException if the day is out of range for the given month and year
+     */
+    public void setDay(int day) {
+        if (!isValidDay(day, this.month, this.year)) {
+            throw new IllegalArgumentException("Invalid day: " + day + ". Must be valid for month " + month + " and year " + year + ".");
+        }
+        this.day = day;
+    }
+
+    /**
+     * Returns the year.
+     *
+     * @return the year (1 or greater)
+     */
+    public int getYear() {
+        return year;
+    }
+
+    /**
+     * Sets the year.
+     *
+     * @param year the year to set (must be positive)
+     * @throws IllegalArgumentException if the year is less than 1
+     */
+    public void setYear(int year) {
+        if (!isValidYear(year)) {
+            throw new IllegalArgumentException("Invalid year: " + year + ". Must be greater than 0.");
+        }
         this.year = year;
     }
 
@@ -411,7 +480,7 @@ public class Date implements Comparable<Date>{
      * @param n the number of random Date objects to generate
      * @return a list of n random Date objects
      */
-    public static List<Date> generateRandomDates(int n) {
+    public List<Date> generateRandomDates(int n) {
         return generator.generateRandomDates(n);
     }
 
@@ -438,4 +507,101 @@ public class Date implements Comparable<Date>{
         // If both year and month are the same, compare by day
         return this.day - other.day;
     }
+
+    /**
+     * Checks if there is at least one leap year in the given range [minYear, maxYear].
+     * A leap year is a year that is:
+     * - Divisible by 4
+     * - Not divisible by 100, unless also divisible by 400
+     *
+     * @param minYear the start of the range (inclusive)
+     * @param maxYear the end of the range (inclusive)
+     * @return true if there is at least one leap year in the range, false otherwise
+     * @throws IllegalArgumentException if minYear is greater than maxYear
+     */
+    public static boolean hasLeapYearInRange(int minYear, int maxYear) {
+        if (minYear > maxYear) {
+            throw new IllegalArgumentException("Invalid range: minYear(" + minYear + ") must be less or equal maxYear(" + maxYear + ").");
+        }
+
+        // Find the first leap year greater than or equal to minYear
+        int firstLeap = (minYear % 4 == 0) ? minYear : minYear + (4 - minYear % 4);
+
+        // If the found year is divisible by 100 but not by 400, it is not a leap year
+        if (firstLeap % 100 == 0 && firstLeap % 400 != 0) {
+            firstLeap += 4; // Move to the next multiple of 4
+        }
+
+        // Check if the first valid leap year is within the given range
+        return firstLeap <= maxYear;
+    }
+
+    /**
+     * Returns the minimum number of days among the given range of months.
+     *
+     * @param minMonth   the starting month (1-12)
+     * @param maxMonth   the ending month (1-12)
+     * @param isLeapYear whether the year is a leap year
+     * @return the minimum number of days in the given month range
+     * @throws IllegalArgumentException if minMonth or maxMonth are out of range, or minMonth > maxMonth
+     */
+    public static int getMinDaysInMonths(int minMonth, int maxMonth, boolean isLeapYear) {
+        if (!isValidMonth(maxMonth) || !isValidMonth(minMonth)) {
+            throw new IllegalArgumentException("Months must be between 1 and 12.");
+        }
+        if (minMonth > maxMonth) {
+            throw new IllegalArgumentException("minMonth must be less than or equal to maxMonth.");
+        }
+
+        // Количество дней в каждом месяце
+        int[] daysInMonth = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+        // Если год високосный, меняем количество дней в феврале
+        if (isLeapYear) {
+            daysInMonth[1] = 29;
+        }
+
+        // Находим минимальное количество дней в заданном диапазоне месяцев
+        int minDays = Integer.MAX_VALUE;
+        for (int month = minMonth; month <= maxMonth; month++) {
+            minDays = Math.min(minDays, daysInMonth[month - 1]);
+        }
+
+        return minDays;
+    }
+
+    /**
+     * Returns the maximum number of days among the given range of months.
+     *
+     * @param minMonth   the starting month (1-12)
+     * @param maxMonth   the ending month (1-12)
+     * @param isLeapYear whether the year is a leap year
+     * @return the maximum number of days in the given month range
+     * @throws IllegalArgumentException if minMonth or maxMonth are out of range, or minMonth > maxMonth
+     */
+    public static int getMaxDaysInMonths(int minMonth, int maxMonth, boolean isLeapYear) {
+        if (!isValidMonth(minMonth) || !isValidMonth(maxMonth)) {
+            throw new IllegalArgumentException("Months must be between 1 and 12.");
+        }
+        if (minMonth > maxMonth) {
+            throw new IllegalArgumentException("minMonth must be less than or equal to maxMonth.");
+        }
+
+        // Количество дней в каждом месяце
+        int[] daysInMonth = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+        // Если год високосный, меняем количество дней в феврале
+        if (isLeapYear) {
+            daysInMonth[1] = 29;
+        }
+
+        // Находим максимальное количество дней в заданном диапазоне месяцев
+        int maxDays = Integer.MIN_VALUE;
+        for (int month = minMonth; month <= maxMonth; month++) {
+            maxDays = Math.max(maxDays, daysInMonth[month - 1]);
+        }
+
+        return maxDays;
+    }
+
 }
