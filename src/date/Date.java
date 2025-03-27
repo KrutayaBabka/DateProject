@@ -1,5 +1,7 @@
+package date;
+
 import java.time.LocalDate;
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * The Date class represents a date with day, month, and year.
@@ -607,7 +609,7 @@ public class Date implements Comparable<Date>{
      * @param n the number of random Date objects to generate
      * @return a list of n random Date objects
      */
-    public List<Date> generateRandomDates(int n) {
+    public ArrayList<Date> generateRandomDates(int n) {
         return generator.generateRandomDates(n);
     }
 

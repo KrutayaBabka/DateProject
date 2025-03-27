@@ -1,5 +1,8 @@
+package test;
+
+import date.Date;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -16,7 +19,7 @@ public class Main {
         System.out.println();
 
         //----------------------------------------------------------------------------------------
-        // Testing static is leap year method
+        // Testing static is leap year method``
         System.out.println("2020 is leap year?: " + Date.isLeapYear(2020));
         System.out.println("2021 is leap year?: " + Date.isLeapYear(2021));
         System.out.println();
@@ -115,7 +118,7 @@ public class Main {
         date.generator.setMaxDay(31);
 
         // Generate 10 random dates
-        List<Date> randomDates = date.generateRandomDates(10);
+        ArrayList<Date> randomDates = date.generateRandomDates(10);
 
         // Print unsorted list of random dates
         System.out.println("Unsorted Dates:");

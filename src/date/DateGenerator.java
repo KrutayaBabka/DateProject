@@ -1,4 +1,7 @@
-import java.util.*;
+package date;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * A class that generates random Date objects within a specified range.
@@ -196,8 +199,8 @@ public class DateGenerator {
      * @param n the number of random Date objects to generate
      * @return a list of n random Date objects
      */
-    public List<Date> generateRandomDates(int n) {
-        List<Date> dates = new ArrayList<>();
+    public ArrayList<Date> generateRandomDates(int n) {
+        ArrayList<Date> dates = new ArrayList<>();
 
         for (int i = 0; i < n; i++) {
             int year = random.nextInt(maxYear - minYear + 1) + minYear;
