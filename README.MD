@@ -1,5 +1,3 @@
-I'll add the Git initialization and push commands to the README.md file. Here's the complete updated version:
-
 ```markdown
 # DateProject
 
